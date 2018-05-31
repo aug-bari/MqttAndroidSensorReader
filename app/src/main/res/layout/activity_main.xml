@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/connectLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/serverUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Server Uri" />
+        <EditText
+            android:id="@+id/clientId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Client id" />
+        <EditText
+            android:id="@+id/accPublishTopic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Accelerometer publish topic" />
+        <EditText
+            android:id="@+id/gyroPublishTopic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Gyro publish topic" />
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username" />
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Password" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="right"
+            android:text="connect"
+            android:id="@+id/connect"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dataLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Sending accelerometer and gyro data to server..."
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Current values:"/>
+
+        <TextView
+            android:id="@+id/accelerationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="..."/>
+        <TextView
+            android:id="@+id/gyroText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="..."/>
+
+    </LinearLayout>
+</FrameLayout>
