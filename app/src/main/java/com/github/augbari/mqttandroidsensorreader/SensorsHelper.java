@@ -15,7 +15,7 @@ public class SensorsHelper {
     }
 
     public void registerSensor(int sensorType, SensorEventListener listener) {
-        sensorManager.registerListener(listener, sensorManager.getDefaultSensor(sensorType), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listener, sensorManager.getDefaultSensor(sensorType), SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public  void unregisterSensor(SensorEventListener listener){

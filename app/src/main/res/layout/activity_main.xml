@@ -23,16 +23,34 @@
             android:id="@+id/clientId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Android"
             android:hint="Client id" />
+        <CheckBox
+            android:id="@+id/sendSingleJson"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Send single Json"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mpu6050"
+            android:hint="Json topic"
+            android:id="@+id/jsonTopic"/>
         <EditText
             android:id="@+id/accPublishTopic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="accelerometer"
             android:hint="Accelerometer publish topic" />
         <EditText
             android:id="@+id/gyroPublishTopic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="gyro"
             android:hint="Gyro publish topic" />
         <EditText
             android:id="@+id/username"
@@ -67,25 +85,5 @@
             android:textSize="14sp"
             android:text="Sending accelerometer and gyro data to server..."
             android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Current values:"/>
-
-        <TextView
-            android:id="@+id/accelerationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="..."/>
-        <TextView
-            android:id="@+id/gyroText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="..."/>
-
     </LinearLayout>
 </FrameLayout>

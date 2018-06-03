@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
@@ -25,6 +24,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     var collectingData = false
+    var startedCollettingGyro = false
+    var startedCollectingAcc = false
+
+    lateinit var currentGyroValues: FloatArray
+    lateinit var currentAccValues: FloatArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 })
             } else {
                 toast("Please fill all the fields")
+            }
+        }
+
+        sendSingleJson.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                jsonTopic.show()
+                accPublishTopic.hide()
+                gyroPublishTopic.hide()
+            } else {
+                jsonTopic.hide()
+                accPublishTopic.show()
+                gyroPublishTopic.show()
             }
         }
     }
@@ -70,38 +86,42 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
     override fun onSensorChanged(event: SensorEvent?) {
+        val jsonEnabled = sendSingleJson.isChecked
         when {
             event?.sensor?.type == Sensor.TYPE_GYROSCOPE -> {
-                val gyroValues = event.values
+                currentGyroValues = event.values
 
-                val gyroVector = "[${gyroValues?.get(0)}, ${gyroValues?.get(1)}, ${gyroValues?.get(2)}]"
-                gyroText.text = "GYRO: $gyroVector"
-
-                mqttHelper.publishMessage("gyro", gyroVector)
-
+                startedCollettingGyro = true
+                if (!jsonEnabled) mqttHelper.publishMessage("gyro",
+                        "[${currentGyroValues.get(0)}, ${currentGyroValues.get(1)}, ${currentGyroValues.get(2)}]")
             }
             event?.sensor?.type == Sensor.TYPE_LINEAR_ACCELERATION -> {
-                val accValues = event.values
+                currentAccValues = event.values
 
-                val accVector = "[${accValues?.get(0)}, ${accValues?.get(1)}, ${accValues?.get(2)}]"
-                accelerationText.text = "ACCELERATION: $accVector"
+                startedCollectingAcc = true
+                if (!jsonEnabled) mqttHelper.publishMessage("acceleration",
+                        "[${currentAccValues.get(0)}, ${currentAccValues.get(1)}, ${currentAccValues.get(2)}]")
+            }
+        }
 
-                mqttHelper.publishMessage("acceleration", accVector)
+        if (jsonEnabled) {
+            if (startedCollectingAcc && startedCollettingGyro) {
+                mqttHelper.publishMessage(jsonTopic.value(),
+                        "{\"gyro\":{\"x\":${currentGyroValues[0]},\"y\":${currentGyroValues[1]},\"z\":${currentGyroValues[2]}}," +
+                                "\"accel\":{\"x\":${currentAccValues[0]},\"y\":${currentAccValues[1]},\"z\":${currentAccValues[2]}}}")
             }
         }
     }
 
 
     private fun validateForms(): Boolean = (serverUri.isValid()
-            && clientId.isValid()
-            && accPublishTopic.isValid()
-            && gyroPublishTopic.isValid())
+            && clientId.isValid())
 
-    private fun LinearLayout.show() {
+    private fun View.show() {
         this.visibility = View.VISIBLE
     }
 
-    private fun LinearLayout.hide() {
+    private fun View.hide() {
         this.visibility = View.GONE
     }
 
